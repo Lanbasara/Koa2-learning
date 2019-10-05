@@ -9,7 +9,7 @@ const path = require("path")
 const app = new Koa();
 const {connectionStr} = require('./config')
 mongoose.connect(connectionStr, 
-  { useNewUrlParser: true, useUnifiedTopology: true }, 
+  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify : false  }, 
   ()=>{console.log('mongobd link success!')}
 )
 mongoose.connection.on('error',console.error);

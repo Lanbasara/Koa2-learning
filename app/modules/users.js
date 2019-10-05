@@ -10,20 +10,20 @@ const userSchema = new Schema({
   avatar_url : { type : String },
   gender : { type : String, enum : ['male','female'], default : 'male', required : true },
   headline : { type : String },
-  locations : { type : [{ type : String }],select:false},
-  business : { type : String,select:false },
+  locations : { type : [{ type : Schema.Types.ObjectId, ref : "Topics" }],select:false},
+  business : { type : Schema.Types.ObjectId, ref : "Topics",select:false },
   employments : { 
     type : [{
-      company : { type : String },
-      job : { type : String }
+      company : { type : Schema.Types.ObjectId, ref : "Topics" },
+      job : { type : Schema.Types.ObjectId, ref : "Topics" }
     }],
     select:false
   },
   educations : {
     type : [
       {
-        school : { type : String },
-        major : { type : String },
+        school : { type : Schema.Types.ObjectId, ref : "Topics" },
+        major : { type : Schema.Types.ObjectId, ref : "Topics" },
         diploma : { type : Number , enum : [1,2,3,4,5]},
         entrance_year : { type : Number },
         gratuation_year : { type : Number },
@@ -34,6 +34,12 @@ const userSchema = new Schema({
   following : {
     type : [
       {type : Schema.Types.ObjectId, ref : "User"}
+    ],
+    select : false
+  },
+  followingTopics : {
+    type : [
+      {type : Schema.Types.ObjectId, ref: 'Topics'}
     ],
     select : false
   }
