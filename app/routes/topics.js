@@ -6,6 +6,7 @@ const { secret } = require('../config')
 const auth = jwt({ secret })
 
 router.get('/',TopicsCtl.find)
+router.get('/:id/questions',TopicsCtl.checkTopicExist,TopicsCtl.listQuestions) 
 router.post('/',auth,TopicsCtl.creat) 
 router.get('/:id',TopicsCtl.checkTopicExist,TopicsCtl.findById) 
 router.patch('/:id',auth,TopicsCtl.checkTopicExist,TopicsCtl.update) 

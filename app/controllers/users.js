@@ -1,5 +1,6 @@
 const jsonwebtoken = require('jsonwebtoken')
 const User = require('../modules/users')
+const Questions = require('../modules/questions')
 const { secret } = require('../config')
 class UserCtl {
   async checkOwner(ctx,next){
@@ -64,6 +65,16 @@ class UserCtl {
       ctx.throw(404,'用户不存在')
     }
     ctx.body = user
+  }
+  async listQuestion(ctx){
+    const questions = await Questions.find({
+      questioner : ctx.params.id
+    })
+    if(questions){
+      ctx.body = questions
+    } else {
+      ctx.body = []
+    }
   }
   async deleteUserbyId(ctx){
     const user = await User.findByIdAndRemove(ctx.params.id);

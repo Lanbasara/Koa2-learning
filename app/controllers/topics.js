@@ -1,4 +1,5 @@
 const Topics = require('../modules/topics')
+const Questions = require('../modules/questions')
 const User = require('../modules/users')
 class TopicsCtl {
   async find(ctx){
@@ -44,6 +45,10 @@ class TopicsCtl {
   async listTopicsFollowers(ctx){
     const users = await User.find({followingTopics : ctx.params.id})
     ctx.body = users
+  }
+  async listQuestions(ctx){
+    const questions = await Questions.find({topics : ctx.params.id})
+    ctx.body = questions
   }
 }
 module.exports = new TopicsCtl()
