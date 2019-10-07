@@ -55,6 +55,12 @@ const userSchema = new Schema({
       { type : Schema.Types.ObjectId, ref :'Answers'}
     ],
     select : false
+  },
+  collectingAnswers : {
+    type : [
+      { type : Schema.Types.ObjectId, ref :'Answers'}
+    ],
+    select : false
   }
 });
 

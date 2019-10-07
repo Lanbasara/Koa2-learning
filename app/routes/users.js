@@ -42,4 +42,7 @@ router.put('/likingAnswers/:id',auth, AnswersCtl.checkanswerExist,UserCtl.likeAn
 router.delete('/likingAnswers/:id',auth,AnswersCtl.checkanswerExist,UserCtl.unlikeAnswer)
 router.put('/dislikingAnswers/:id',auth, AnswersCtl.checkanswerExist,UserCtl.dislikeAnswer, UserCtl.unlikeAnswer)
 router.delete('/dislikingAnswers/:id',auth,AnswersCtl.checkanswerExist,UserCtl.undislikeAnswer)
+router.get('/:id/collectAnswers',UserCtl.listcollectingAnswers)
+router.put('/collectAnswers/:id',auth, AnswersCtl.checkanswerExist,UserCtl.collectAnswers)
+router.delete('/uncollectAnswers/:id',auth,AnswersCtl.checkanswerExist,UserCtl.uncollectAnswers)
 module.exports = router

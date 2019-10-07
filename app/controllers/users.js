@@ -216,5 +216,32 @@ class UserCtl {
     }
     ctx.status = 204
   }
+  async listcollectingAnswers(ctx){
+    // /:id/likinganswers
+    const me = await User.findById(ctx.params.id).select('+collectingAnswers').populate('collectingAnswers')
+    if(!me){
+      ctx.throw(404,'用户不存在')
+    } else {
+      ctx.body = me.collectingAnswers
+    }
+  }
+  async collectAnswers(ctx,next){
+    const me = await User.findById(ctx.state.user._id).select('+collectingAnswers')
+    if(!me.collectingAnswers.map(id => id.toString()).includes(ctx.params.id)){
+      me.collectingAnswers.push(ctx.params.id)
+      me.save()
+    }
+    ctx.status = 204
+    await next()
+  }
+  async uncollectAnswers(ctx){
+    const me = await User.findById(ctx.state.user._id).select('+collectingAnswers')
+    const index = me.collectingAnswers.map(f => f.toString()).indexOf(ctx.params.id)
+    if(index !== -1){
+      me.collectingAnswers.splice(index,1)
+      me.save()
+    }
+    ctx.status = 204
+  }
 }
 module.exports = new UserCtl()
