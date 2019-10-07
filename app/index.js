@@ -8,6 +8,15 @@ const koaStatic = require('koa-static')
 const path = require("path")
 const app = new Koa();
 const {connectionStr} = require('./config')
+/*
+链接数据库
+静态服务器
+error处理
+body的解析和上传
+对parameter的解析
+路由
+监听端口
+*/
 mongoose.connect(connectionStr, 
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify : false  }, 
   ()=>{console.log('mongobd link success!')}

@@ -1,6 +1,7 @@
 const jsonwebtoken = require('jsonwebtoken')
 const User = require('../modules/users')
 const Questions = require('../modules/questions')
+const Answers = require('../modules/Answers')
 const { secret } = require('../config')
 class UserCtl {
   async checkOwner(ctx,next){
@@ -155,6 +156,62 @@ class UserCtl {
     const index = me.followingTopics.map(f => f.toString()).indexOf(ctx.params.id)
     if(index !== -1){
       me.followingTopics.splice(index,1)
+      me.save()
+    }
+    ctx.status = 204
+  }
+  async listLikingAnswers(ctx){
+    // /:id/likinganswers
+    const me = await User.findById(ctx.params.id).select('+likingAnswers').populate('likingAnswers')
+    if(!me){
+      ctx.throw(404,'用户不存在')
+    } else {
+      ctx.body = me.likingAnswers
+    }
+  }
+  async listdisLikingAnswers(ctx){
+    // /:id/likinganswers
+    const me = await User.findById(ctx.params.id).select('+dislikingAnswers').populate('dislikingAnswers')
+    if(!me){
+      ctx.throw(404,'用户不存在')
+    } else {
+      ctx.body = me.dislikingAnswers
+    }
+  }
+  async likeAnswer(ctx,next){
+    const me = await User.findById(ctx.state.user._id).select('+likingAnswers')
+    if(!me.likingAnswers.map(id => id.toString()).includes(ctx.params.id)){
+      me.likingAnswers.push(ctx.params.id)
+      me.save()
+      await Answers.findByIdAndUpdate(ctx.params.id, { $inc : { voteCount : 1 } });
+    }
+    ctx.status = 204
+    await next()
+  }
+  async unlikeAnswer(ctx){
+    const me = await User.findById(ctx.state.user._id).select('+likingAnswers')
+    const index = me.likingAnswers.map(f => f.toString()).indexOf(ctx.params.id)
+    if(index !== -1){
+      me.likingAnswers.splice(index,1)
+      me.save()
+      await Answers.findByIdAndUpdate(ctx.params.id, { $inc : { voteCount : -1 } });
+    }
+    ctx.status = 204
+  }
+  async dislikeAnswer(ctx,next){
+    const me = await User.findById(ctx.state.user._id).select('+dislikingAnswers')
+    if(!me.dislikingAnswers.map(id => id.toString()).includes(ctx.params.id)){
+      me.dislikingAnswers.push(ctx.params.id)
+      me.save()
+    }
+    ctx.status = 204
+    await next()
+  }
+  async undislikeAnswer(ctx){
+    const me = await User.findById(ctx.state.user._id).select('+dislikingAnswers')
+    const index = me.dislikingAnswers.map(f => f.toString()).indexOf(ctx.params.id)
+    if(index !== -1){
+      me.dislikingAnswers.splice(index,1)
       me.save()
     }
     ctx.status = 204

@@ -41,7 +41,7 @@ class QuestionsCtl {
   }
   async checkQuestioner(ctx,next){
     const question = await Questions.findById(ctx.params.id).populate('questioner')
-    if(question.questioner._id.toString()!==ctx.state.user._id){
+    if(question.questioner.id.toString()!==ctx.state.user._id){
       ctx.throw(403, '无权限')
     }
     await next(  )

@@ -33,6 +33,7 @@ const userSchema = new Schema({
   },
   following : {
     type : [
+      // 可以ref自己
       {type : Schema.Types.ObjectId, ref : "User"}
     ],
     select : false
@@ -40,6 +41,18 @@ const userSchema = new Schema({
   followingTopics : {
     type : [
       {type : Schema.Types.ObjectId, ref: 'Topics'}
+    ],
+    select : false
+  },
+  likingAnswers : {
+    type : [
+      { type : Schema.Types.ObjectId, ref :'Answers'}
+    ],
+    select : false
+  },
+  dislikingAnswers : {
+    type : [
+      { type : Schema.Types.ObjectId, ref :'Answers'}
     ],
     select : false
   }
