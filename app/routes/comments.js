@@ -1,0 +1,16 @@
+const Router = require('koa-router')
+const AnswersCtl = require('../controllers/answers')
+const QuestionsCtl = require('../controllers/question')
+const CommentsCtl = require('../controllers/comments')
+const router = new Router({prefix : '/questions/:questionId/answers/:answerId/comments'})
+const jwt = require('koa-jwt')
+const { secret } = require('../config')
+const auth = jwt({ secret })
+
+router.get('/',CommentsCtl.find)
+router.post('/',auth,CommentsCtl.creat) 
+router.get('/:id',auth,CommentsCtl.checkcommentExist,CommentsCtl.findById) 
+router.patch('/:id',auth,CommentsCtl.checkcommentExist,CommentsCtl.checkcommentator,CommentsCtl.update)
+router.delete('/:id',auth,CommentsCtl.checkcommentExist,CommentsCtl.checkcommentator,CommentsCtl.delete)
+// router.get('/:id/topicfollowers', AnswersCtl.checkTopicExist,AnswersCtl.listTopicsFollowers) 
+module.exports = router
