@@ -1,7 +1,7 @@
 const jsonwebtoken = require('jsonwebtoken')
 const User = require('../modules/users')
 const Questions = require('../modules/questions')
-const Answers = require('../modules/Answers')
+const Answers = require('../modules/answers')
 const { secret } = require('../config')
 class UserCtl {
   async checkOwner(ctx,next){
