@@ -1,4 +1,4 @@
-const Answers = require('../modules/Answers')
+const Answers = require('../modules/answers')
 class AnswersCtl {
   async find(ctx){
     const {per_page = 10} = ctx.query 
